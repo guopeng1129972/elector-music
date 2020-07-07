@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
@@ -10,13 +10,8 @@ app.on('ready', () => {
   })
 
   mainWindow.loadFile('index.html')
-  const secondWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-    parent: mainWindow
+  ipcMain.on('message', (event, arg) => {
+    console.log(arg)
+    event.sender.send('reply', 'hello from main')
   })
-  secondWindow.loadFile('second.html')
 })

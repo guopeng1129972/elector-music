@@ -5,10 +5,13 @@
 // selectively enable features needed in the rendering
 // process.
 
-//node api
-alert(process.versions.node)
 
-//dom api
+const { ipcRenderer } = require('electron')
+
 window.addEventListener('DOMContentLoaded', () => {
-  alert('gretting from the DOM side')
+  ipcRenderer.send('message', 'hello from randerer')
+  ipcRenderer.on('reply', (event, arg) => {
+    console.log(arg)
+    document.getElementById('renderVal').innerHTML = arg
+  })
 })
