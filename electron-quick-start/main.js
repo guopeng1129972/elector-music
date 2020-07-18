@@ -10,4 +10,16 @@ app.on('ready', () => {
   })
   mainWindow.webContents.openDevTools()
   mainWindow.loadFile('./renderer/index.html')
+  ipcMain.on('add-music-window', () => {
+    const addWindow = new BrowserWindow({
+      width: 400,
+      height: 300,
+      webPreferences: {
+        nodeIntegration: true,
+      },
+      parent: mainWindow
+    })
+    addWindow.loadFile('./renderer/add.html')
+  })
 })
+
