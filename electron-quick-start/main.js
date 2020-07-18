@@ -8,10 +8,6 @@ app.on('ready', () => {
       nodeIntegration: true,
     }
   })
-
-  mainWindow.loadFile('index.html')
-  ipcMain.on('message', (event, arg) => {
-    console.log(arg)
-    event.sender.send('reply', 'hello from main')
-  })
+  mainWindow.webContents.openDevTools()
+  mainWindow.loadFile('./renderer/index.html')
 })
