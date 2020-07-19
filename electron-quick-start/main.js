@@ -14,6 +14,9 @@ class AppWindow extends BrowserWindow {
     const finalConfig = { ...basicConfig, ...config }
     super(finalConfig)
     this.loadFile(fileLocation)
+    this.once('ready-to-show', () => {
+      this.show()
+    })
   }
 
 }
