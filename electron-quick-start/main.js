@@ -50,7 +50,7 @@ app.on('ready', () => {
   ipcMain.on('open-music-file', (event) => {
     dialog.showOpenDialog({
       properties: ['openFile', 'multiSelections'],
-      filters: [{ name: 'Music', extensions: ['mp3', 'flv', 'mp4'] }]
+      filters: [{ name: 'Music', extensions: ['mp3', 'flv'] }]
     }).then(files => { if (files) { console.log('main', files); event.sender.send('selected-file', files) } })
   })
 })
