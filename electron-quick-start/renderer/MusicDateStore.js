@@ -1,6 +1,6 @@
 // const { app } = require('electron');
 const Store = require('electron-store');
-const uuidv4 = require('uuid/dist/v4');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 class DateStore extends Store {
@@ -11,6 +11,8 @@ class DateStore extends Store {
   saveTracks() { this.set('tracks', this.tracks); return this }
   getTracks() { return this.get('tracks') || [] }
   addTracks(tracks) {
+    console.log('musicDateStore.js tracks ', tracks);
+    // return;
     const tracksWithProps = tracks.map(track => {
       return {
         id: uuidv4(),
@@ -22,6 +24,7 @@ class DateStore extends Store {
       return currentTracksPath.indexOf(track.path) < 0
     })
     this.tracks = [...this.tracks, ...tracksWithProps]
+    return this.saveTracks()
   }
 }
 module.exports = DateStore

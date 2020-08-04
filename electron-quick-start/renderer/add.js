@@ -1,9 +1,13 @@
 const { ipcRenderer } = require('electron')
 const { $ } = require('./helper')
 const path = require('path')
-const { log } = require('util')
+let musicFilesPath = []
 $('select-music').addEventListener('click', () => {
   ipcRenderer.send('open-music-file')
+})
+$('add-music').addEventListener('click', () => {
+  console.log('musicFilesPath', musicFilesPath);
+  ipcRenderer.send('add-tracks', musicFilesPath)
 })
 
 const renderListHTML = (paths) => {
@@ -16,10 +20,13 @@ const renderListHTML = (paths) => {
 }
 
 ipcRenderer.on('selected-file', (event, path) => {
-  console.log(path.filePaths);
+  // console.log(path.filePaths);
   if (Array.isArray(path.filePaths)) {
     renderListHTML(path.filePaths)
+    musicFilesPath = path.filePaths
+
   }
 })
+
 //elector dialog api
 //https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener

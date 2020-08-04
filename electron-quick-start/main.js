@@ -1,20 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const Store = require('electron-store')
-const store = new Store()
-console.log(app.getPath('userData'));
-// /Users/mac/Library/Application Support/electron-quick-start
-store.set('unicorn', '🦄');
-console.log(store.get('unicorn'));
-//=> '🦄'
-
-// Use dot-notation to access nested properties
-store.set('foo.bar', true);
-console.log(store.get('foo'));
-//=> {bar: true}
-
-// store.delete('unicorn');
-// console.log(store.get('unicorn'));
-//=> undefined
+const DateStore = require('./renderer/MusicDateStore');
+const myStore = new DateStore({ 'name': 'Music Data' })
 
 class AppWindow extends BrowserWindow {
   constructor(config, fileLocation, dev) {
@@ -51,7 +37,13 @@ app.on('ready', () => {
     dialog.showOpenDialog({
       properties: ['openFile', 'multiSelections'],
       filters: [{ name: 'Music', extensions: ['mp3', 'flv'] }]
-    }).then(files => { if (files) { console.log('main', files); event.sender.send('selected-file', files) } })
+    }).then(files => { if (files) { /* console.log('main', files); */ event.sender.send('selected-file', files) } })
+  })
+  ipcMain.on('add-tracks', (event, tracks) => {
+    // console.log('main.js tracks', tracks)
+    // main.js tracks [ '/Users/mac/Desktop/github/music-list/后来 - 刘若英.mp3' ]
+    let data = myStore.addTracks(tracks).getTracks()
+    console.log('main.js data', data);
   })
 })
 
