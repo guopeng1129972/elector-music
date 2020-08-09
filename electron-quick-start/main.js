@@ -25,7 +25,10 @@ class AppWindow extends BrowserWindow {
 
 app.on('ready', () => {
   const mainWindow = new AppWindow({}, './renderer/index.html', true)
-
+  mainWindow.webContents.on('did-finish-load', () => {
+    console.log('page did finish load')
+    mainWindow.send('getTracks', myStore.getTracks())
+  })
   ipcMain.on('add-music-window', () => {
     const addWindow = new AppWindow({
       width: 400,
@@ -37,13 +40,11 @@ app.on('ready', () => {
     dialog.showOpenDialog({
       properties: ['openFile', 'multiSelections'],
       filters: [{ name: 'Music', extensions: ['mp3', 'flv'] }]
-    }).then(files => { if (files) { /* console.log('main', files); */ event.sender.send('selected-file', files) } })
+    }).then(files => { if (files) { event.sender.send('selected-file', files) } })
   })
   ipcMain.on('add-tracks', (event, tracks) => {
-    // console.log('main.js tracks', tracks)
-    // main.js tracks [ '/Users/mac/Desktop/github/music-list/后来 - 刘若英.mp3' ]
-    let data = myStore.addTracks(tracks).getTracks()
-    console.log('main.js data', data);
+    let updatedTracks = myStore.addTracks(tracks).getTracks()
+    mainWindow.send('get-tracks', updatedTracks)
   })
 })
 

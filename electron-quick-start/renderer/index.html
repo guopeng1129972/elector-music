@@ -4,13 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <title>noob music</title>
+  <link rel="stylesheet" href="../css/font-awesome-4.7.0/css/font-awesome.css">
   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <!-- <script src="https://use.fontawesome.com/85d73ff0ea.js"></script> -->
 </head>
 
 <body>
   <div class="container mt-4">
     <h1>noob music</h1>
-    <button type="button" id="add-music-button" class="btn btn-primary btn-lg btn-block mt-4">添加歌曲到曲库</button>
+    <button type="button" id="add-music-button" class="btn btn-primary btn-lg btn-block mt-4">
+      添加歌曲到曲库</button>
+    <div id="trackList" class="mt-4"></div>
   </div>
   <script>
     require('./index.js')
