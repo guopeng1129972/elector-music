@@ -26,5 +26,9 @@ class DateStore extends Store {
     this.tracks = [...this.tracks, ...tracksWithProps]
     return this.saveTracks()
   }
+  deleteTracks(deleteId) {
+    this.tracks = this.tracks.filter(item => item.id !== deleteId)
+    return this.saveTracks()
+  }
 }
 module.exports = DateStore

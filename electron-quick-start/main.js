@@ -44,7 +44,13 @@ app.on('ready', () => {
   })
   ipcMain.on('add-tracks', (event, tracks) => {
     let updatedTracks = myStore.addTracks(tracks).getTracks()
-    mainWindow.send('get-tracks', updatedTracks)
+    mainWindow.send('getTracks', updatedTracks)
+  })
+  ipcMain.on('delete-track', (event, id) => {
+    console.log('id', id)
+    const updatedTracks = myStore.deleteTracks(id).getTracks()
+    console.log('updatedTracks ', updatedTracks)
+    mainWindow.send('getTracks', updatedTracks)
   })
 })
 
