@@ -1,11 +1,41 @@
 const { ipcRenderer } = require('electron')
-const { $ } = require('./helper')
+const { $, convertDuration } = require('./helper')
 
 let musicAudio = new Audio()
 let allTracks
 let currentTrack
 $('add-music-button').addEventListener('click', () => {
   ipcRenderer.send('add-music-window')
+})
+
+const renderPLayHtml = (name, duration) => {
+  const player = $('player-status')
+  const html = `<div class="col font-weigth-bold">正在播放：${name}</div>
+  <div class="col"><span id="current-seeker">00:00</span>/${convertDuration(duration)}</div>
+  `
+  player.innerHTML = html
+}
+
+const updateProgressHTML = (currentTime, duration) => {
+  const progress = Math.floor(currentTime / duration * 100) + "%"
+  const bar = $("player-progress");
+  const seeker = $("current-seeker")
+  bar.innerHTML = progress
+  bar.style.width = progress
+  seeker.innerHTML = convertDuration(currentTime)
+
+}
+
+
+musicAudio.addEventListener('loadedmetadata', () => {
+  //渲染播放器状态 api loadedmetadata 当浏览器已加载音频/视频的元数据时
+  renderPLayHtml(currentTrack.fileName, musicAudio.duration)
+
+})
+
+musicAudio.addEventListener('timeupdate', () => {
+  //更新播放器状态 api timeupdate 当目前的播放位置已更改时
+  updateProgressHTML(musicAudio.currentTime, musicAudio.duration)
 })
 
 const renderListHTML = (tracks) => {
