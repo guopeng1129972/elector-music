@@ -1,0 +1,30 @@
+directories:
+  output: dist
+  buildResources: build
+appId: noobMusicplayer
+copyright: '©2020 guopeng112, Inc.'
+mac:
+  category: public.app-category.productivity
+dmg:
+  background: build/appdmg.png
+  icon: build/icon.icns
+  iconSize: 100
+  contents:
+    - x: 380
+      'y': 280
+      type: link
+      path: /Applications
+    - x: 110
+      'y': 280
+      type: file
+  window:
+    width: 500
+    height: 500
+linux:
+  target:
+    - AppImage
+    - deb
+win:
+  target: squirrel
+  icon: build/icon.ico
+electronVersion: 8.2.3
